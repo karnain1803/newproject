@@ -1,6 +1,12 @@
 package application;
 
+import application.menu.AddNewProfileItem;
+import application.menu.ConsoleMenu;
+import application.menu.Menu;
+import application.menu.PrintAllItem;
+
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Scanner;
 
@@ -11,13 +17,22 @@ public class Application {
     private static final List<Profile> profiles = init();
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
-        while (true){
-            System.out.println("1 - print All List\n" +
-                    "2 - Add New Profile\n" +
-                    "3 - Remove profile");
-            quick(sc.nextInt());
-            System.out.println();
-        }
+        ConsoleMenu mn = new ConsoleMenu();
+        mn.addItem(new PrintAllItem());
+        mn.addItem(new AddNewProfileItem());
+        mn.printAllItems();
+//        while (true){
+//            System.out.println("1 - print All List\n" +
+//                    "2 - Add New Profile\n" +
+//                    "3 - Remove profile");
+//            ConsoleMenu mn = new ConsoleMenu();
+//            mn.addItem(new PrintAllItem());
+//            mn.addItem(new AddNewProfileItem());
+//            mn.printAllItems();
+//
+//            quick(sc.nextInt());
+//            System.out.println();
+//        }
     }
 
     public static List<Profile> init(){
@@ -28,8 +43,6 @@ public class Application {
         List<Profile> initProfile = new ArrayList<>();
         initProfile.add(Sasha);
         return initProfile;
-
-
     }
 
     private static void removeProfile(){
@@ -53,6 +66,12 @@ public class Application {
         profile.setName(sc.next());
         return profile;
     }
+
+    private static Message readMessages(){
+        Scanner sc = new Scanner(System.in);
+        Message message = new Message(sc.next(), sc.next());
+        return message;
+    }
     public static void addProfile(Profile profile){
         profiles.add(profile);
     }
@@ -62,6 +81,7 @@ public class Application {
             System.out.println("Sms " + pr.getMessages());
         }
     }
+
     private static void quick(int quick) {
             switch (quick) {
                 case GET_ALL:
@@ -76,6 +96,15 @@ public class Application {
                     listRemoveProfile();
                     removeProfile();
                     break;
+                case 4:
+                    listRemoveProfile();
+                    Scanner sc = new Scanner(System.in);
+                    int idex = sc.nextInt();
+                    Profile pr = profiles.get(idex - 1);
+                    pr.addMessage(readMessages());
+                    break;
+                default:
+                    System.out.println("Almaz say - poshel naher");
             }
         }
 }
